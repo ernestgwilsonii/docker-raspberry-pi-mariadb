@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+
+  # REF: https://github.com/ernestgwilsonii/docker-raspberry-pi-mariadb
+  mysql:
+    image: ernestgwilsonii/docker-raspberry-pi-mariadb:10.1.37
+    hostname: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=SetThisToSomethingStrong!
+    volumes:
+      - type: bind
+        source: /opt/mysql/var/lib/mysql
+        target: /var/lib/mysql
+    networks:
+      - mysql-net1
+    ports:
+      - mode: host
+        target: 3306
+        published: 3306
+    deploy:
+      labels:
+        local.description: "mysql"
+      restart_policy:
+        condition: on-failure
+
+networks:
+  mysql-net1:

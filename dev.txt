@@ -1,0 +1,62 @@
+docker run --name mariadb -it arm32v7/debian:9.8-slim bash
+#docker rm mariadb
+
+apt-get update && apt-get upgrade -y
+
+apt-get install -y --no-install-recommends locales mariadb-server-10.1
+
+localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+mkdir -p /var/run/mysqld
+chown -R mysql:root /var/run/mysqld
+/usr/bin/mysql_install_db -u mysql
+
+#/usr/sbin/mysqld --verbose --help
+mysqld
+#/etc/mysql/debian-start
+
+
+cat /etc/mysql/my.cnf
+# The MariaDB configuration file
+#
+# The MariaDB/MySQL tools read configuration files in the following order:
+# 1. "/etc/mysql/mariadb.cnf" (this file) to set global defaults,
+# 2. "/etc/mysql/conf.d/*.cnf" to set global options.
+# 3. "/etc/mysql/mariadb.conf.d/*.cnf" to set MariaDB-only options.
+# 4. "~/.my.cnf" to set user-specific options.
+#
+# If the same option is defined multiple times, the last one will apply.
+#
+# One can use all long options that the program supports.
+# Run program with --help to get a list of available options and with
+# --print-defaults to see which it would actually understand and use.
+
+#
+# This group is read both both by the client and the server
+# use it for options that affect everything
+#
+
+[client-server]
+
+# Import all .cnf files from configuration directory
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/
+
+
+root@c4f28e75bcbd:/# ls -alF /var/run/mysqld
+total 8
+drwxr-xr-x 2 mysql root 4096 Apr  3 12:18 ./
+drwxr-xr-x 1 root  root 4096 Apr  3 12:07 ../
+
+root@c4f28e75bcbd:/# ls -alF /var/lib/mysql/
+total 110632
+drwxr-xr-x 4 mysql mysql     4096 Apr  3 12:18 ./
+drwxr-xr-x 1 root  root      4096 Apr  3 12:01 ../
+-rw-rw---- 1 mysql mysql    16384 Apr  3 12:18 aria_log.00000001
+-rw-rw---- 1 mysql mysql       52 Apr  3 12:18 aria_log_control
+-rw-r--r-- 1 root  root         0 Apr  3 12:02 debian-10.1.flag
+-rw-rw---- 1 mysql mysql 50331648 Apr  3 12:18 ib_logfile0
+-rw-rw---- 1 mysql mysql 50331648 Apr  3 12:02 ib_logfile1
+-rw-rw---- 1 mysql mysql 12582912 Apr  3 12:18 ibdata1
+-rw-rw---- 1 mysql mysql        0 Apr  3 12:10 multi-master.info
+drwx------ 2 mysql root      4096 Apr  3 12:02 mysql/
+drwx------ 2 mysql mysql     4096 Apr  3 12:08 performance_schema/
