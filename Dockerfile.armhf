@@ -7,11 +7,15 @@ RUN apt-get update \
     && mkdir -p /var/run/mysqld \
     && chown -R mysql:root /var/run/mysqld \
     && /usr/bin/mysql_install_db -u mysql \
+    && rm /etc/mysql/mariadb.conf.d/50-server.cnf \
     && apt-get clean -y \
     && apt-get autoclean -y \
     && apt-get autoremove -y \
     && rm -rf /root/.cache \
     && rm -rf /var/lib/apt/lists/*
+
+COPY 50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN chmod a+r /etc/mysql/mariadb.conf.d/50-server.cnf
 
 COPY entrypoint.sh /
 
