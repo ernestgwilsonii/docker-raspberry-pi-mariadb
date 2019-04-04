@@ -1,5 +1,5 @@
 ############################################################
-# MariaDB - MyQSL (in a Docker Container) for Raspberry Pi #
+# MariaDB - MySQL (in a Docker Container) for Raspberry Pi #
 #                                 REF: https://mariadb.org #
 ############################################################
 
